@@ -1,0 +1,76 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    string name;
+    float price;
+    int ID;
+    Node* next;
+
+   
+    Node(int d, string n, float p, int id)
+        : data(d), name(n), price(p), ID(id), next(nullptr) {}
+};
+
+
+void insert(Node*& head, int data, string name, float price, int id) {
+    Node* newNode = new Node(data, name, price, id);
+    newNode->next = head;
+    head = newNode;
+}
+
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << "Data: " << current->data << ", Name: " << current->name
+             << ", Price: " << current->price << ", ID: " << current->ID << endl;
+        current = current->next;
+    }
+}
+
+// Function to print all lists in Head3
+void printAllLists(Node** Head3, int size) {
+    for (int i = 0; i < size; ++i) {
+        cout << "List " << i+1 << ":\n";
+        printList(Head3[i]);
+        cout << endl;
+    }
+}
+
+int main() {
+    // Create three separate linked lists
+    Node* Head = nullptr;
+    insert(Head, 9, "Apple", 200.0f, 1);
+
+    Node* Head1 = nullptr;
+    insert(Head1, 2, "Banana", 500.0f, 2);
+
+    Node* Head2 = nullptr;
+    insert(Head2, 5, "Oranges", 700.0f, 3);
+
+    // Create Head3 as an array of pointers to Node (linked lists)
+    Node** Head3 = new Node*[3];
+    Head3[0] = Head;
+    Head3[1] = Head1;
+    Head3[2] = Head2;
+
+    // Print all lists using Head3
+    printAllLists(Head3, 3);
+
+    // Clean up memory (optional, for completeness)
+    for (int i = 0; i < 3; ++i) {
+        Node* current = Head3[i];
+        while (current != nullptr) {
+            Node* temp = current;
+            current = current->next;
+            delete temp;
+        }
+    }
+    delete[] Head3;
+
+    return 0;
+}
